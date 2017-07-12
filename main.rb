@@ -3,9 +3,7 @@ $LOAD_PATH << '.'
 require 'spreadsheet'
 require 'download'
 
-#Download.get_files
-
-MAIN_FOLDER = 'months'
+Download.get_files
 
 puts "Processando arquivos:"
 
@@ -30,7 +28,7 @@ def process_xls(workbook, sheet)
 	return true
 end
 
-Dir.foreach(File.join(Dir.pwd, MAIN_FOLDER)) do |month|
+Dir.foreach(File.join(Dir.pwd, Download::MAIN_FOLDER)) do |month|
 	next if month == '.' || month == '..'
 	
 	puts month
@@ -38,7 +36,7 @@ Dir.foreach(File.join(Dir.pwd, MAIN_FOLDER)) do |month|
 	newbook = Spreadsheet::Workbook.new
 	sheet = newbook.create_worksheet
 
-	subfolder = File.join(Dir.pwd, MAIN_FOLDER, month)
+	subfolder = File.join(Dir.pwd, Download::MAIN_FOLDER, month)
 
 	can_write = false
 
@@ -47,7 +45,7 @@ Dir.foreach(File.join(Dir.pwd, MAIN_FOLDER)) do |month|
 		
 		puts "* " + xls
 
-		workbook = Spreadsheet.open(File.join(Dir.pwd, MAIN_FOLDER, month, xls))
+		workbook = Spreadsheet.open(File.join(Dir.pwd, Download::MAIN_FOLDER, month, xls))
 		can_write = process_xls(workbook, sheet)
 	end
 

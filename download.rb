@@ -5,9 +5,14 @@ require 'net/http'
 
 module Download
 
+    MAIN_FOLDER = "months"
     FULL_URL = "http://www.prefeitura.sp.gov.br/cidade/secretarias/transportes/institucional/sptrans/acesso_a_informacao/index.php?p=228269"
 
     def Download.get_files
+
+        unless File.directory?(File.join(Dir.pwd, MAIN_FOLDER))
+            Dir.mkdir(File.join(Dir.pwd, MAIN_FOLDER), 0777)
+        end
 
         page = Nokogiri::HTML(open(FULL_URL))
         
@@ -20,7 +25,7 @@ module Download
             caption = calendario.css('caption')
             next if caption.text.strip.empty?
 
-            folder_path = File.join(Dir.pwd, 'months', caption.text.strip)
+            folder_path = File.join(Dir.pwd, MAIN_FOLDER, caption.text.strip)
             
             unless File.directory?(folder_path)
                 Dir.mkdir(folder_path, 0777)
