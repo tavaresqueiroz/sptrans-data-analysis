@@ -6,7 +6,7 @@ require 'net/http'
 module Download
 
     MAIN_FOLDER = "months"
-    FULL_URL = "http://www.prefeitura.sp.gov.br/cidade/secretarias/transportes/institucional/sptrans/acesso_a_informacao/index.php?p=228269"
+    FULL_URL = "http://www.prefeitura.sp.gov.br/cidade/secretarias/transportes/institucional/sptrans/acesso_a_informacao/index.php?p=188767"
 
     def Download.get_files
 
@@ -44,21 +44,25 @@ module Download
                 
                 uri = URI(href)
                 
-                Net::HTTP.start(uri.host) do |http|
-                    unless File.exist?(File.join(folder_path, file_name))
-                        xls = File.open(File.join(folder_path, file_name), "wb")
-                        begin
-                            http.request_get(uri.path) do |resp|
-                                resp.read_body do |segment|
-                                    xls.write(segment)
+                begin
+                    Net::HTTP.start(uri.host) do |http|
+                        unless File.exist?(File.join(folder_path, file_name))
+                            xls = File.open(File.join(folder_path, file_name), "wb")
+                            begin
+                                http.request_get(uri.path) do |resp|
+                                    resp.read_body do |segment|
+                                        xls.write(segment)
+                                    end
                                 end
+                            ensure
+                                xls.close()
                             end
-                        ensure
-                            xls.close()
                         end
                     end
+                    puts "* " + file_name
+                rescue StandardError => e
+                    puts e
                 end
-                puts "* " + file_name
             }
         }
         puts "\n\n"

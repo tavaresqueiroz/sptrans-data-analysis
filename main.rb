@@ -5,7 +5,7 @@ require 'download'
 require 'linha'
 require 'mes'
 
-Download.get_files	
+Download.get_files
 
 puts "Processando arquivos:"
 
@@ -94,6 +94,10 @@ def write_new_xls mes_atual, path, data
 		sheet.row(index + increase).push(dia[:total]) unless dia.nil?
 	}
 
+	unless File.directory?(path)
+		Dir.mkdir(path, 0777)
+	end
+
 	newbook.write(File.join(path, mes_atual.nome + ".xls"))
 end
 
@@ -106,35 +110,43 @@ def get_data_string str
 	end
 end
 
-Dir.foreach(FULL_PATH_MONTHS) do |month|
-	next if month == '.' || month == '..'
+def init
+	Dir.foreach(FULL_PATH_MONTHS) do |month|
+		next if month == '.' || month == '..'
 
-	puts "\t#{month}"
+		puts "#{month}"
 
-	subfolder = File.join(FULL_PATH_MONTHS, month)
+		subfolder = File.join(FULL_PATH_MONTHS, month)
 
-	next if Dir[File.join(subfolder, "*")].empty?
+		next if Dir[File.join(subfolder, "*")].empty?
 
-	linhas = Array.new
-	parsed_data = nil
-	Dir.foreach(subfolder) do |xls|
-		next if xls == '.' || xls == '..' || month + ".xls" == xls
-		
-		puts "\t\t#{xls}"
+		linhas = Array.new
+		parsed_data = nil
+		Dir.foreach(subfolder) do |xls|
+			next if xls == '.' || xls == '..' || month + ".xls" == xls
+			
+			puts "* " + xls
 
-		data = get_data_string(xls)
-		if parsed_data.nil?
-			parsed_data = Date.strptime(data, "%Y%m%d") unless data == "total"
+			data = get_data_string(xls)
+			if parsed_data.nil?
+				parsed_data = Date.strptime(data, "%Y%m%d") unless data == "total"
+			end
+			
+			workbook = Spreadsheet.open(File.join(FULL_PATH_MONTHS, month, xls))
+			
+			linhas = read_xls_lines workbook, data, linhas
 		end
-		
-		workbook = Spreadsheet.open(File.join(FULL_PATH_MONTHS, month, xls))
-		
-		linhas = read_xls_lines workbook, data, linhas
+
+		mes_atual = Mes.new month, linhas
+
+		write_new_xls mes_atual, File.join(FULL_PATH_MONTHS, "result"), parsed_data
 	end
+end
 
-	mes_atual = Mes.new month, linhas
-
-	write_new_xls mes_atual, File.join(FULL_PATH_MONTHS, month), parsed_data
+begin
+	init
+rescue => exception
+	puts exception
 end
 
 puts "**Terminado**"

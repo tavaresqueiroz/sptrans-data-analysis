@@ -1,10 +1,21 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    byebug (9.0.6)
+    coderay (1.1.1)
+    method_source (0.8.2)
     mini_portile2 (2.2.0)
     nokogiri (1.8.0-x64-mingw32)
       mini_portile2 (~> 2.2.0)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-byebug (3.4.2)
+      byebug (~> 9.0)
+      pry (~> 0.10)
     ruby-ole (1.2.12.1)
+    slop (3.6.0)
     spreadsheet (1.1.4)
       ruby-ole (>= 1.0)
 
@@ -13,7 +24,8 @@ PLATFORMS
 
 DEPENDENCIES
   nokogiri
+  pry-byebug
   spreadsheet
 
 BUNDLED WITH
-   1.15.1
+   1.15.2
