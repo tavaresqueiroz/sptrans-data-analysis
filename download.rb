@@ -3,6 +3,9 @@ require 'nokogiri'
 require 'open-uri'
 require 'net/http'
 
+=begin
+Função usada para fazer o download dos arquivos XLS
+=end
 module Download
 
     MAIN_FOLDER = "months"
