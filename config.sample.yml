@@ -1,0 +1,36 @@
+# SPTrans Data Analysis Configuration
+# Copy this file to config.yml and modify as needed
+
+# Company name to filter data by
+company_filter: "SAMBAIBA"
+
+# Directory for output files
+output_directory: "months/result"
+
+# Directory for downloaded files
+download_directory: "months"
+
+# File permissions for created directories (octal)
+file_permissions: "0755"
+
+# URL to scrape data from
+data_url: "http://www.prefeitura.sp.gov.br/cidade/secretarias/transportes/institucional/sptrans/acesso_a_informacao/index.php?p=188767"
+
+# Date format for Excel output
+date_format: "%d-%m-%Y"
+
+# Logging configuration
+logging:
+  enabled: true
+  level: "INFO"  # DEBUG, INFO, WARN, ERROR
+
+# Excel processing configuration
+excel:
+  # Column indices for different data types
+  columns:
+    empresa: 3
+    nome: 4
+    qtd: 18
+    total_empresa: 2
+    total_nome: 3
+    total_qtd: 17
