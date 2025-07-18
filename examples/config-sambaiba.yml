@@ -1,0 +1,24 @@
+# Example Configuration for Different Companies
+
+# This example shows how to configure the application for different bus companies
+
+# Configuration for SAMBAIBA (default)
+company_filter: "SAMBAIBA"
+output_directory: "months/result/sambaiba"
+download_directory: "months"
+file_permissions: "0755"
+data_url: "http://www.prefeitura.sp.gov.br/cidade/secretarias/transportes/institucional/sptrans/acesso_a_informacao/index.php?p=188767"
+date_format: "%d-%m-%Y"
+
+logging:
+  enabled: true
+  level: "INFO"
+
+excel:
+  columns:
+    empresa: 3
+    nome: 4
+    qtd: 18
+    total_empresa: 2
+    total_nome: 3
+    total_qtd: 17
